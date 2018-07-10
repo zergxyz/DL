@@ -46,22 +46,7 @@ np.random.randn(3,4) # have a shape (3, 4)
 Multiclass SVM: The SVM loss is set up so that the SVM “wants” the correct class for each image to a have a score higher than the incorrect classes by some fixed margin Δ. Notice that it’s sometimes helpful to anthropomorphise the loss functions as we did above: The SVM “wants” a certain outcome in the sense that the outcome would yield a lower loss (which is good).
 $$L_i = \sum_{j\neq y_i}\max(0, s_j - s_{y_i} + \Delta)，$$
 这里 $\Delta$通常设置为1.0 
-```python
-def svm_loss_vectorized(W, X, y, reg):
-    loss, grad = None, None
-    N = X.shape[0]
-    C = W.shape[1]
 
-    scores = X.dot(W)
-    correct_score = scores[np.arange(N), y]
-
-    scores = np.maximum(0, scores - correct_score[:, np.newaxis] + 1.0)
-    scores[np.arange(N), y] = 0
-
-    loss = np.sum(scores) / N + reg * np.sum(W * W)
-
-    return loss, grad
-```
 SVM gradients: 
 对一个sample $x_i$，svm的loss为：
 
