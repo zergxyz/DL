@@ -42,35 +42,25 @@ np.zeros((3, 4))     # have a shape (3, 4)
 np.random.randn(3,4) # have a shape (3, 4)
 
 ```
-![](https://i.imgur.com/anjnuhD.png)
-![](https://i.imgur.com/exelctj.png)
-![](https://i.imgur.com/p1kQxDq.png)
+### Loss function
+Multiclass SVM: The SVM loss is set up so that the SVM “wants” the correct class for each image to a have a score higher than the incorrect classes by some fixed margin Δ. Notice that it’s sometimes helpful to anthropomorphise the loss functions as we did above: The SVM “wants” a certain outcome in the sense that the outcome would yield a lower loss (which is good).
+$$L_i = \sum_{j\neq y_i}\max(0, s_j - s_{y_i} + \Delta)，$$
+这里 $\Delta$通常设置为1.0 
+```python
+def svm_loss_vectorized(W, X, y, reg):
+    loss, grad = None, None
+    N = X.shape[0]
+    C = W.shape[1]
 
-He initialization: this is named for the first author of He et al., 2015. (If you have heard of "Xavier initialization", this is similar except Xavier initialization uses a scaling factor for the weights $W^{[l]}$ of `sqrt(1./layers_dims[l-1])` where He initialization would use `sqrt(2./layers_dims[l-1])`.)
-``` python 
-def initialize_parameters_he(layers_dims):
-    """
-    Arguments:
-    layer_dims -- python array (list) containing the size of each layer.
-    
-    Returns:
-    parameters -- python dictionary containing your parameters "W1", "b1", ..., "WL", "bL":
-                    W1 -- weight matrix of shape (layers_dims[1], layers_dims[0])
-                    b1 -- bias vector of shape (layers_dims[1], 1)
-                    ...
-                    WL -- weight matrix of shape (layers_dims[L], layers_dims[L-1])
-                    bL -- bias vector of shape (layers_dims[L], 1)
-    """
-    
-    np.random.seed(3)
-    parameters = {}
-    L = len(layers_dims) - 1 # integer representing the number of layers
-     
-    for l in range(1, L + 1):
-        ### START CODE HERE ### (≈ 2 lines of code)
-        parameters['W' + str(l)] = np.random.randn(layers_dims[l], layers_dims[l-1]) * np.sqrt(2/layers_dims[l-1])
-        parameters['b' + str(l)] = np.zeros((layers_dims[l], 1))
-        ### END CODE HERE ###
-        
-    return parameters
+    scores = X.dot(W)
+    correct_score = scores[np.arange(N), y]
+
+    scores = np.maximum(0, scores - correct_score[:, np.newaxis] + 1.0)
+    scores[np.arange(N), y] = 0
+
+    loss = np.sum(scores) / N + reg * np.sum(W * W)
+
+    return loss, grad
 ```
+Softmax: cross-entropy loss that has the form 
+$$L_i = -\log\left(\frac{e^{f_{y_i}}}{ \sum_j e^{f_j} }\right) \hspace{0.5in} \text{or equivalently} \hspace{0.5in} L_i = -f_{y_i} + \log\sum_j e^{f_j}$$
