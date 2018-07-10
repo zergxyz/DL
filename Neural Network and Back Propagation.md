@@ -62,5 +62,52 @@ def svm_loss_vectorized(W, X, y, reg):
 
     return loss, grad
 ```
+SVM gradients: 
+对一个sample $x_i$，svm的loss为：
+
+$$
+\begin{aligned}
+L_i = & \sum_{j \neq y_i}^C \max\left( 0, w_j x_i - w_{y_i} x_i + \Delta \right) \newline
+= & \max\left( 0, w_0 x_i - w_{y_i} x_i + \Delta \right) + ... + \max\left( 0, w_j x_j - w_{y_i} x_i + \Delta \right) + ...
+\end{aligned}
+$$
+
+$L_i$ 对 $w_j$ 求导：
+
+$$
+\mathrm{d}w_j =  \frac{\partial L_i}{\partial w_j} = 0 + 0 + ... +
+ \mathbb{1} \left( w_j x_i - w_{y_i} x_i + \Delta > 0\right) \cdot x_i
+$$
+
+$L_i$ 对 $w_{y_i}$ 求导：
+
+$$
+\begin{aligned}
+\mathrm{d}w_{y_i} =& \frac{\partial L_i}{\partial w_{y_i}} =
+\mathbb{1} \left( w_0 x_i - w_{y_i} x_i + \Delta > 0\right) \cdot (-x_i) +
+ ... + \mathbb{1} \left( w_j x_i - w_{y_i} x_i + \Delta > 0\right) \cdot (-x_i) + ... \newline
+ =& - \left(  \sum_{j \neq y_i}^C  \mathbb{1} \left( w_j x_i - w_{y_i} x_i + \Delta > 0\right) \right) \cdot x_i
+ \end{aligned}
+$$
+``` python 
+def svm_loss_vectorized(W, X, y, reg):
+    loss, dW = None, None
+    N = X.shape[0]
+    C = W.shape[1]
+    dW = np.zeros_like(W)
+    
+    scores = X.dot(W)
+    correct_score = scores[np.arange(N), y]
+    scores = np.maximum(0, scores - correct_score[:, np.newaxis] + 1.0)
+    scores[np.arange(N), y] = 0
+    dScore = (scores > 0).astype(np.float)
+    dScore[np.arange(N), y] = -np.sum(dScore, axis=1)
+    
+    dW = X.T.dot(dScore)
+    loss = np.sum(scores) / N + reg * np.sum(W * W)
+    dW = dW / N + 2 * reg * W
+    return loss, dW
+```
+
 Softmax: cross-entropy loss that has the form 
 $$L_i = -\log\left(\frac{e^{f_{y_i}}}{ \sum_j e^{f_j} }\right) \hspace{0.5in} \text{or equivalently} \hspace{0.5in} L_i = -f_{y_i} + \log\sum_j e^{f_j}$$
