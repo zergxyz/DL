@@ -145,3 +145,13 @@ def softmax_loss_vectorized(W, X, y, reg):
     dW = dW + 2*reg*W
     return loss, dW
 ```
+### Back propagation for 2 layer NN
+based on Andrew's advice we should use the following architecture: 
+* input X should have size (C, N)
+* W1 should have shape (nW1, C)
+Basically we put size of data in the column position and put the feature dimension in the row position for X. 
+Backprop和chain rule，就是用求解微分时的链式法则，将复杂算式的微分计算，一步步分解成小的node，然后用这些基本的node层层叠加，最后得到微分结果。通常做法是先画出computation graph，然后再stage by stage的计算grads，基本的公式是：
+>                      down_diff = local_diff * up_diff
+其中up_diff是从上一层block传递下来的，local_diff要通过计算得到，并且和输入值有关，两者相乘传递给下一层的block。道理很简单，但是具体代码写起来会遇到各种问题，到时候再见招拆招吧。
+
+
