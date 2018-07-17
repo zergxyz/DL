@@ -12,6 +12,7 @@
 * 100万数据量：98% / 1% / 1%；
 * 超百万数据量：99.5% / 0.25% / 0.25%（或者99.5% / 0.4% / 0.1%）
 
+### Bias / Variance 
 High variance (overfitting) for example:
 * Training error: 1%
 * Dev error: 11%
@@ -38,3 +39,48 @@ If your algorithm has a high variance:
 More data. Try regularization. Try a different model that is suitable for your data. You should try the previous two points until you have a low bias and low variance. In the older days before deep learning, there was a "Bias/variance tradeoff". But because now you have more options/tools for solving the bias and variance problem its really helpful to use deep learning. 
 
 Training a bigger neural network never hurts. 
+
+### Regularization
+### 正则化（regularization）
+利用正则化来解决High variance 的问题，正则化是在 Cost function 中加入一项正则化项，惩罚模型的复杂度。
+
+Logistic regression 加入正则化项的cost：
+
+L2 norm：$\dfrac{\lambda}{2m}||w||_{2}^{2} = \dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}} w_{j}^{2}=\dfrac{\lambda}{2m}w^{T}w$
+L1正则化： $\dfrac{\lambda}{2m}||w||_{1}=\dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}}|w_{j}|$
+
+Newral network cost: 
+$J(w^{[1]},b^{[1]},\cdots,w^{[L]},b^{[L]})=\dfrac{1}{m}\sum\limits_{i=1}^{m}l(\hat y^{(i)},y^{(i)})+\dfrac{\lambda}{2m}\sum\limits_{l=1}^{L}||w^{[l]}||_{F}^{2}$ 
+其中 $||w^{[l]}||_{F}^{2}=\sum\limits_{i=1}^{n^{[l-1]}}\sum\limits_{j=1}^{n^{[l]}}(w_{ij}^{[l]})^{2}$ ，因为 w 的大小为 (n^{[l-1]},n^{[l]}) ，该矩阵范数被称为“Frobenius norm”
+
+Weight decay
+
+在加入正则化项后，梯度变为：
+$dW^{[l]} = (form\_backprop)+\dfrac{\lambda}{m}W^{[l]}$
+
+则梯度更新公式变为：
+$W^{[l]}:= W^{[l]}-\alpha dW^{[l]}$
+
+代入可得：
+$W^{[l]}:= W^{[l]}-\alpha [ (form\_backprop)+\dfrac{\lambda}{m}W^{[l]}]\\ = W^{[l]}-\alpha\dfrac{\lambda}{m}W^{[l]} -\alpha(form\_backprop)\\=(1-\dfrac{\alpha\lambda}{m})W^{[l]}-\alpha(form\_backprop)$
+
+其中， $(1-\dfrac{\alpha\lambda}{m})$ 为一个 <1 的项，会给原来的 W^{[l]}一个衰减的参数，所以L2范数正则化也被称为权重衰减(Weight decay)。
+
+Dropout 正则化
+Dropout（随机失活）就是在神经网络的Dropout层，为每个神经元结点设置一个随机消除的概率，对于保留下来的神经元，我们得到一个节点较少，规模较小的网络进行训练。
+
+实现Dropout的方法：反向随机失活（Inverted dropout）
+
+首先假设对 layer 3 进行dropout：
+``` python 
+keep_prob = 0.8  # 设置神经元保留概率
+d3 = np.random.rand(a3.shape[0], a3.shape[1]) < keep_prob
+a3 = np.multiply(a3, d3)
+a3 /= keep_prob
+/= keep_prob
+```
+依照例子中的 keep_prob = 0.8 ，那么就有大约20%的神经元被删除了，也就是说 $a^{[3]}$ 中有20%的元素被归零了，在下一层的计算中有 $Z^{[4]}=W^{[4]}\cdot a^{[3]}+b^{[4]}$ ，所以为了不影响 $Z^{[4]}$ 的期望值，所以需要 $W^{[4]}\cdot a^{[3]}$ 的部分除以一个keep_prob。
+
+Inverted dropout 通过对“a3 /= keep_prob”,则保证无论 keep_prob 设置为多少，都不会对 Z^{[4]} 的期望值产生影响。
+
+Notation：在测试阶段不要用dropout，因为那样会使得预测结果变得随机。
