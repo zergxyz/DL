@@ -45,6 +45,8 @@ Training a bigger neural network never hurts.
 
 Logistic regression 加入正则化项的cost：
 
+$$db = \frac{\partial L}{\partial z} \frac{\partial z}{\partial b} = dz * 1 = (a-y)$$
+
 L2 norm：$$\dfrac{\lambda}{2m}||w||_{2}^{2} = \dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}} w_{j}^{2}=\dfrac{\lambda}{2m}w^{T}w$$
 L1正则化： $$\dfrac{\lambda}{2m}||w||_{1}=\dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}}|w_{j}|$$
 
