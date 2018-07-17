@@ -45,9 +45,9 @@ Training a bigger neural network never hurts.
 
 Logistic regression 加入正则化项的cost：
 
-L2 norm：$\dfrac{\lambda}{2m}||w||_{2}^{2} = \dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}} w_{j}^{2}=\dfrac{\lambda}{2m}w^{T}w$
+L2 norm：
 $$\dfrac{\lambda}{2m}||w||{2}^{2} = \dfrac{\lambda}{2m}\sum\limits{j=1}^{n_{x}} w_{j}^{2}=\dfrac{\lambda}{2m}w^{T}w$$
-$$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$
+
 L1正则化： $\dfrac{\lambda}{2m}||w||_{1}=\dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}}|w_{j}|$
 
 Newral network cost: 
