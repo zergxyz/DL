@@ -28,3 +28,13 @@ Best:
 * Training error: 0.5%
 * Test error: 1%
 These Assumptions came from that human has 0% error. If the problem isn't like that you'll need to use human error as baseline.
+
+
+
+
+If your algorithm has a high bias:Try to make your NN bigger (size of hidden units, number of layers). Try a different model that is suitable for your data. Try to run it longer. Different (advanced) optimization algorithms.
+
+If your algorithm has a high variance:
+More data. Try regularization. Try a different model that is suitable for your data. You should try the previous two points until you have a low bias and low variance. In the older days before deep learning, there was a "Bias/variance tradeoff". But because now you have more options/tools for solving the bias and variance problem its really helpful to use deep learning. 
+
+Training a bigger neural network never hurts. 
