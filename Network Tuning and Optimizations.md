@@ -51,8 +51,8 @@ $\dfrac{\lambda}{2m}||w||^{2} = \dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}} w_{
 L1正则化： $\dfrac{\lambda}{2m}||w||=\dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}}|w_{j}|$
 
 Newral network cost: 
-$$J(w^{[1]},b^{[1]},\cdots,w^{[L]},b^{[L]})=\dfrac{1}{m}\sum\limits_{i=1}^{m}l(\hat y^{(i)},y^{(i)})+\dfrac{\lambda}{2m}\sum\limits_{l=1}^{L}||w^{[l]}||_{F}^{2}$$ 
-其中 $$||w^{[l]}||_{F}^{2}=\sum\limits_{i=1}^{n^{[l-1]}}\sum\limits_{j=1}^{n^{[l]}}(w_{ij}^{[l]})^{2}$$ ，因为 w 的大小为 (n^{[l-1]},n^{[l]}) ，该矩阵范数被称为“Frobenius norm”
+$$J=\dfrac{1}{m}\sum\limits_{i=1}^{m}l(\hat y^{(i)},y^{(i)})+\dfrac{\lambda}{2m}\sum\limits_{l=1}^{L}||w^{[l]}||{F}^{2}$$ 
+其中 $$||w^{[l]}||{F}^{2}=\sum\limits_{i=1}^{n^{[l-1]}}\sum\limits_{j=1}^{n^{[l]}}(w_{ij}^{[l]})^{2}$$ ，因为 w 的大小为 $(n^{[l-1]},n^{[l]})$ ，该矩阵范数被称为“Frobenius norm”
 
 Weight decay
 
