@@ -51,8 +51,8 @@ $\dfrac{\lambda}{2m}||w||^{2} = \dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}} w_{
 L1正则化： $\dfrac{\lambda}{2m}||w||=\dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}}|w_{j}|$
 
 Newral network cost: 
-$$J=\dfrac{1}{m}\sum\limits_{i=1}^{m}l(\hat y^{(i)},y^{(i)})+\dfrac{\lambda}{2m}\sum\limits_{l=1}^{L}||w^{[l]}||{F}^{2}$$ 
-其中 $$||w^{[l]}||{F}^{2}=\sum\limits_{i=1}^{n^{[l-1]}}\sum\limits_{j=1}^{n^{[l]}}(w_{ij}^{[l]})^{2}$$ ，因为 w 的大小为 $(n^{[l-1]},n^{[l]})$ ，该矩阵范数被称为“Frobenius norm”
+$$J=\dfrac{1}{m}\sum\limits_{i=1}^{m}l(\hat y^{(i)},y^{(i)})+\dfrac{\lambda}{2m}\sum\limits_{l=1}^{L}||w^{[l]}||^{2}$$ 
+其中 $$||w^{[l]}||^{2}=\sum\limits_{i=1}^{n^{[l-1]}}\sum\limits_{j=1}^{n^{[l]}}(w_{ij}^{[l]})^{2}$$ ，因为 w 的大小为 $(n^{[l-1]},n^{[l]})$ ，该矩阵范数被称为“Frobenius norm”
 
 Weight decay
 
@@ -62,9 +62,7 @@ $$dW^{[l]} = (form\_backprop)+\dfrac{\lambda}{m}W^{[l]}$$
 则梯度更新公式变为：
 $$W^{[l]}:= W^{[l]}-\alpha dW^{[l]}$$
 
-代入可得：
-$$W^{[l]}:= W^{[l]}-\alpha [ (form\_backprop)+\dfrac{\lambda}{m}W^{[l]}]\\ = W^{[l]}-\alpha\dfrac{\lambda}{m}W^{[l]} -\alpha(form\_backprop)\\=(1-\dfrac{\alpha\lambda}{m})W^{[l]}-\alpha(form\_backprop)$$
-
+$W^{[l]}:= W^{[l]}-\alpha \[ (form\_backprop)+\dfrac{\lambda}{m}W^{[l]}]\\ = W^{[l]}-\alpha\dfrac{\lambda}{m}W^{[l]} -\alpha(form\_backprop)\\=(1-\dfrac{\alpha\lambda}{m})W^{[l]}-\alpha(form\_backprop)$
 其中， $(1-\dfrac{\alpha\lambda}{m})$ 为一个 <1 的项，会给原来的 W^{[l]}一个衰减的参数，所以L2范数正则化也被称为权重衰减(Weight decay)。
 
 Dropout 正则化
