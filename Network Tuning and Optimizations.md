@@ -45,6 +45,7 @@ Training a bigger neural network never hurts.
 
 Logistic regression 加入正则化项的cost：
 
+$J(\theta_0, \theta_1) = \dfrac {1}{2m} \displaystyle \sum {i=1}^m \left ( \hat{y}{i}- y_{i} \right)^2 = \dfrac {1}{2m} \displaystyle \sum {i=1}^m \left (h\theta (x_{i}) - y_{i} \right)^2$
 L2 norm：
 $$\dfrac{\lambda}{2m}||w||{2}^{2} = \dfrac{\lambda}{2m}\sum\limits{j=1}^{n_{x}} w_{j}^{2}=\dfrac{\lambda}{2m}w^{T}w$$
 $$\dfrac{\lambda}{2m}||w||_{2}^{2} = \dfrac{\lambda}{2m}\sum\limits_{j=1}^{n_{x}} w_{j}^{2}=\dfrac{\lambda}{2m}w^{T}w$$
